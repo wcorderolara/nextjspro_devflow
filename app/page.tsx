@@ -1,9 +1,11 @@
-export default function Home() {
+async function Home() {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+
   return (
-    <div>
-      <h1 className="text-3xl text-primay-100 font-black">
-        Welcome to the world of Next.js
-      </h1>
+    <div className="md:grid-cols grid grid-cols-1 sm:grid-cols-2">
+      <h1 className="h1-bold">Welcome to Next.js</h1>
     </div>
   );
 }
+
+export default Home;
