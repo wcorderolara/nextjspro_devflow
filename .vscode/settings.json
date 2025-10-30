@@ -8,7 +8,7 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "prettier.tabWidth": 2,
+  "prettier.tabWidth": 4,
   "prettier.useTabs": false,
   "prettier.semi": true,
   "prettier.singleQuote": false,
