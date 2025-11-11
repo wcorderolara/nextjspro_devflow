@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import { signOut } from "@/auth";
 
@@ -15,11 +14,7 @@ async function Home() {
           "use server";
           await signOut({ redirectTo: ROUTES.SIGN_IN });
         }}
-      >
-        <Button type="submit" className="cursor-pointer">
-          Log Out
-        </Button>
-      </form>
+      ></form>
     </div>
   );
 }
