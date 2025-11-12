@@ -98,7 +98,6 @@ export const techMap: { [key: string]: string } = {
   couchbase: "devicon-couchbase-plain",
   couchdb: "devicon-couchdb-plain",
   cpanel: "devicon-cpanel-plain",
-  cplusplus: "devicon-cplusplus-plain",
   crystal: "devicon-crystal-plain",
   csharp: "devicon-csharp-plain",
   css3: "devicon-css3-plain",
