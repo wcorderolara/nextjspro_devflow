@@ -4,6 +4,7 @@ import { signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import LocalSearch from "@/components/search/LocalSearch";
+import HomeFilter from "@/components/filters/HomeFilter";
 
 const questions = [
   {
@@ -130,11 +131,15 @@ interface SearchParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 async function Home({ searchParams }: SearchParams) {
-  const { query } = await searchParams;
   // const { data } = await axios.get('/api/questions', { query: { search:query } });
+  const { query = "", filter } = await searchParams;
 
   const filteredQuestions = questions.filter((question) => {
-    return question.title.toLowerCase().includes(((query as string) || "")?.toLowerCase());
+    const queryMatch = question.title.toLowerCase().includes((query as string)?.toLowerCase());
+    const filterMatch = filter
+      ? question.tags.some((tag) => tag.toLowerCase().includes((filter as string)?.toLowerCase()))
+      : true;
+    return queryMatch || filterMatch;
   });
 
   return (
@@ -149,7 +154,7 @@ async function Home({ searchParams }: SearchParams) {
       <section className="mt-11">
         <LocalSearch route="/" imgSrc="/icons/search.svg" placeholder="Search questions..." otherClasses="flex-1" />
       </section>
-      {/* HomeFilter */}
+      <HomeFilter />
       <div className="mt-10 flex w-full flex-col gap-6">
         {filteredQuestions.map((question) => (
           <h2 key={question._id}>{question.title}</h2>
