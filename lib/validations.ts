@@ -35,3 +35,20 @@ export const SignUpSchema = zd.object({
     .regex(/[0-9]/, { message: "Password must contain at least one number." })
     .regex(/[^a-zA-Z0-9]/, { message: "Password must contain at least one special character." }),
 });
+
+export const AskQuestionSchema = zd.object({
+  title: zd
+    .string()
+    .min(5, { message: "Title must be at least 5 characters long." })
+    .max(100, { message: "Title cannot exceed 100 characters long." }),
+  content: zd.string().min(10, { message: "Content must be at least 10 characters long." }),
+  tags: zd
+    .array(
+      zd
+        .string()
+        .min(1, { message: "Tag cannot be empty." })
+        .max(30, { message: "Tag cannot exceed 30 characters long." })
+    )
+    .min(1, { message: "At least one tag is required." })
+    .max(5, { message: "You can add up to 5 tags only." }),
+});

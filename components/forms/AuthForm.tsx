@@ -86,16 +86,6 @@ const AuthForm = <T extends FieldValues>({ schema, defaultValues, formType, onSu
           )}
         </Field>
       </form>
-
-      {/* <Card className="w-full sm:max-w-md">
-        <CardHeader>
-          <CardTitle>{buttonText}</CardTitle>
-        </CardHeader>
-        <CardContent></CardContent>
-        <CardFooter>
-          
-        </CardFooter>
-      </Card> */}
     </>
   );
 };
