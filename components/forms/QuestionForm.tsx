@@ -1,17 +1,23 @@
 "use client";
 import { AskQuestionSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Form } from "../ui/form";
 import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Controller, DefaultValues, FieldValues, Path, SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
+import dynamic from "next/dynamic";
+import { forwardRef } from "react";
+import { type MDXEditorMethods, type MDXEditorProps } from "@mdxeditor/editor";
+
+const Editor = dynamic(() => import("@/components/editor"), {
+  // Make sure we turn SSR off
+  ssr: false,
+});
 
 const QuestionForm = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const editorRef = useRef<MDXEditorMethods>(null);
   // Initialize the form with react-hook-form and zod validation
   // Set default values for the form fields
   // useFrom Hook from react-hook-form and zodResolver from @hookform/resolvers/zod
@@ -65,7 +71,9 @@ const QuestionForm = () => {
                 <FieldLabel htmlFor={field.name} className="paragraph-semibold text-dark400_light800 font-extrabold">
                   Detailed explanation of your problem <span className="text-primary-500">*</span>
                 </FieldLabel>
-                <FieldContent>TEXT AREA</FieldContent>
+                <FieldContent>
+                  <Editor editorRef={editorRef} value={field.value} fieldChange={field.onChange} />
+                </FieldContent>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 <FieldDescription className="body-regular text-white-500 mt-2.5">
                   Introduce the problem and expand on what you put in the title. Include all the information someone
