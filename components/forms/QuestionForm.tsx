@@ -10,6 +10,8 @@ import { Button } from "../ui/button";
 import dynamic from "next/dynamic";
 import { forwardRef } from "react";
 import { type MDXEditorMethods, type MDXEditorProps } from "@mdxeditor/editor";
+import TagCard from "../cards/TagCard";
+import z from "zod";
 
 const Editor = dynamic(() => import("@/components/editor"), {
   // Make sure we turn SSR off
@@ -21,7 +23,7 @@ const QuestionForm = () => {
   // Initialize the form with react-hook-form and zod validation
   // Set default values for the form fields
   // useFrom Hook from react-hook-form and zodResolver from @hookform/resolvers/zod
-  const form = useForm({
+  const form = useForm<z.infer<typeof AskQuestionSchema>>({
     resolver: zodResolver(AskQuestionSchema),
     defaultValues: {
       title: "",
@@ -30,7 +32,36 @@ const QuestionForm = () => {
     },
   });
 
-  const handleCreateQuestion = () => {};
+  const handleCreateQuestion = (data: z.infer<typeof AskQuestionSchema>) => {
+    console.log("Form Data Submitted: ", data);
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: { value: string[] }) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const tagInput = e.currentTarget.value.trim();
+
+      if (tagInput && !field.value.includes(tagInput) && tagInput.length < 15) {
+        form.setValue("tags", [...field.value, tagInput]);
+        e.currentTarget.value = "";
+
+        form.clearErrors("tags");
+      } else if (tagInput.length >= 15) {
+        form.setError("tags", { type: "manual", message: "Tag should be less than 15 characters" });
+      } else if (field.value.includes(tagInput)) {
+        form.setError("tags", { type: "manual", message: "Tag already added" });
+      }
+    }
+  };
+
+  const handleRemoveTag = (tag: string, field: { value: string[] }) => () => {
+    const newTags = field.value.filter((t) => t !== tag);
+
+    form.setValue("tags", newTags);
+    if (newTags.length === 0) {
+      form.setError("tags", { type: "manual", message: "At least one tag is required" });
+    }
+  };
 
   return (
     <Form {...form}>
@@ -101,9 +132,22 @@ const QuestionForm = () => {
                       className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px] border"
                       aria-invalid={fieldState.invalid}
                       autoComplete="off"
-                      {...field}
+                      onKeyDown={(e) => handleInputKeyDown(e, field)}
                     />
-                    TAGS
+                    {field.value.length > 0 && (
+                      <div className="flex-start mt-2.5 flex-wrap gap-2.5">
+                        {field?.value?.map((tag: string, index: number) => (
+                          <TagCard
+                            key={tag}
+                            tag={{ _id: index.toString(), name: tag }}
+                            compact
+                            remove
+                            isButton
+                            handleRemove={handleRemoveTag(tag, field)}
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </FieldContent>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
