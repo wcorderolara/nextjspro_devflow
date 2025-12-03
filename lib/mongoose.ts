@@ -1,6 +1,4 @@
 import mongoose, { Mongoose } from "mongoose";
-import { cache } from "react";
-import { th } from "zod/v4/locales";
 
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
