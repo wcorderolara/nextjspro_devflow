@@ -234,21 +234,11 @@ const questions: Question[] = [
   },
 ];
 
-const test = async () => {
-  try {
-    throw new ValidationError({ title: ["Required"], description: ["Description Too short."] });
-  } catch (error) {
-    return handleError(error);
-  }
-};
-
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 async function Home({ searchParams }: SearchParams) {
   // const { data } = await axios.get('/api/questions', { query: { search:query } });
-  const result = await test();
-  console.log(result);
 
   const { query = "", filter } = await searchParams;
 
