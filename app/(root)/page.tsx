@@ -7,9 +7,6 @@ import LocalSearch from "@/components/search/LocalSearch";
 import HomeFilter from "@/components/filters/HomeFilter";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { Question } from "@/types/global";
-import handleError from "@/lib/handlers/error";
-import { NotFoundError, ValidationError } from "@/lib/http-errors";
-import { title } from "process";
 
 const questions: Question[] = [
   {
