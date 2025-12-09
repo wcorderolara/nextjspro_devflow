@@ -52,3 +52,25 @@ export const AskQuestionSchema = zd.object({
     .min(1, { message: "At least one tag is required." })
     .max(5, { message: "You can add up to 5 tags only." }),
 });
+
+export const UserSchema = zd.object({
+  username: zd
+    .string()
+    .min(2, { message: "Name must be at least 2 characters long." })
+    .max(30, { message: "Name cannot exceed 50 characters long." }),
+  name: zd
+    .string()
+    .min(2, { message: "Name must be at least 2 characters long." })
+    .max(50, { message: "Name cannot exceed 50 characters long." })
+    .regex(/^[a-zA-Z\s]+$/, { message: "Name can only contain letters and spaces." }),
+  email: zd.string().email({ message: "Please provide a valid email address." }),
+  bio: zd.string().max(160, { message: "Bio cannot exceed 160 characters long." }).optional(),
+  image: zd.string().url({ message: "Please provide a valid URL." }).optional(),
+  location: zd.string().max(100, { message: "Location cannot exceed 100 characters long." }).optional(),
+  portfolio: zd
+    .string()
+    .url({ message: "Please provide a valid URL." })
+    .max(200, { message: "Portfolio URL cannot exceed 200 characters long." })
+    .optional(),
+  reputation: zd.number().optional(),
+});
