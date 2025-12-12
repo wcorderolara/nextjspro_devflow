@@ -6,16 +6,16 @@ import { APIErrorEsponse } from "@/types/global";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { provider } = await request.json();
+  const { providerAccountId } = await request.json();
 
   try {
-    const validatedData = AccountSchema.partial().safeParse({ provider });
+    const validatedData = AccountSchema.partial().safeParse({ providerAccountId });
 
     if (!validatedData.success) {
       throw new ValidationError(validatedData.error.flatten().fieldErrors);
     }
 
-    const account = await Account.findOne({ provider });
+    const account = await Account.findOne({ providerAccountId });
     if (!account) {
       throw new NotFoundError("Account");
     }
