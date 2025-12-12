@@ -7,6 +7,8 @@ import LocalSearch from "@/components/search/LocalSearch";
 import HomeFilter from "@/components/filters/HomeFilter";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { Question } from "@/types/global";
+import { api } from "@/lib/api";
+import handleError from "@/lib/handlers/error";
 
 const questions: Question[] = [
   {
@@ -231,11 +233,21 @@ const questions: Question[] = [
   },
 ];
 
+const test = async () => {
+  try {
+    return await api.users.getAll();
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 async function Home({ searchParams }: SearchParams) {
-  // const { data } = await axios.get('/api/questions', { query: { search:query } });
+  const users = await test();
+  console.log("Users:", users);
+  ``;
 
   const { query = "", filter } = await searchParams;
 
