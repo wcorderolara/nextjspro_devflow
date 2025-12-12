@@ -74,3 +74,21 @@ export const UserSchema = zd.object({
     .optional(),
   reputation: zd.number().optional(),
 });
+
+export const AccountSchema = zd.object({
+  userId: zd.string().regex(/^[a-f\d]{24}$/i, { message: "Invalid userId. Must be a Mongo ObjectId." }),
+  name: zd.string().min(1, { message: "Name is required." }),
+  image: zd.string().url({ message: "Please provide a valid URL." }).nullable().optional(),
+  password: zd
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long." })
+    .max(100, { message: "Password cannot exceed 100 characters long." })
+    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter." })
+    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter." })
+    .regex(/[0-9]/, { message: "Password must contain at least one number." })
+    .regex(/[^a-zA-Z0-9]/, { message: "Password must contain at least one special character." })
+    .nullable()
+    .optional(),
+  provider: zd.string().min(1, { message: "Provider is required." }),
+  providerAccountId: zd.string().min(1, { message: "Provider account ID is required." }),
+});
