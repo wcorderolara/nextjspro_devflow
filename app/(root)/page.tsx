@@ -233,22 +233,10 @@ const questions: Question[] = [
   },
 ];
 
-const test = async () => {
-  try {
-    return await api.users.getAll();
-  } catch (error) {
-    return handleError(error);
-  }
-};
-
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 async function Home({ searchParams }: SearchParams) {
-  const users = await test();
-  console.log("Users:", users);
-  ``;
-
   const { query = "", filter } = await searchParams;
 
   const filteredQuestions = questions.filter((question) => {

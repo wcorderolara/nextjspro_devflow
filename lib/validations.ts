@@ -92,3 +92,14 @@ export const AccountSchema = zd.object({
   provider: zd.string().min(1, { message: "Provider is required." }),
   providerAccountId: zd.string().min(1, { message: "Provider account ID is required." }),
 });
+
+export const SignInWithOAuthSchema = zd.object({
+  provider: zd.enum(["google", "github"], { message: "Unsupported provider." }),
+  providerAccountId: zd.string().min(1, { message: "Provider account ID is required." }),
+  user: zd.object({
+    name: zd.string().min(1, { message: "Name is required." }),
+    email: zd.string().email({ message: "Please provide a valid email address." }),
+    image: zd.string().url({ message: "Please provide a valid URL." }).optional(),
+    username: zd.string().min(3, { message: "Username must be at least 3 characters long." }).optional(),
+  }),
+});
